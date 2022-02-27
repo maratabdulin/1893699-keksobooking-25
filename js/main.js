@@ -1,18 +1,92 @@
-const getRandomInt = (minNumber, maxNumber) => {
-  if (maxNumber - minNumber < 0) {
-    return null;
+const ADVERT_COUNT = 10;
+const APARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const CHECKIN_OPTIONS = ['12:00', '13:00', '14:00'];
+const CHECKOUT_OPTIONS = ['12:00', '13:00', '14:00'];
+const FEATURES_TYPE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+const PHOTO_LIST = [
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
+];
+
+function getRandomPositiveInteger (a, b) {
+  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
+  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+
+}
+function getRandomPositiveFloat (a, b, digits = 1) {
+  const lower = Math.min(Math.abs(a), Math.abs(b));
+  const upper = Math.max(Math.abs(a), Math.abs(b));
+  const result = Math.random() * (upper - lower) + lower;
+  return +result.toFixed(digits);
+}
+
+// Делаем массив для обозначения уникальных номеров в ссылках на аватар
+const avatarNumbers = Array.from({length: ADVERT_COUNT}, (_, i) => i + 1);
+// Рандомизируем массив
+const avatarRandomNumbers = avatarNumbers.sort(() => Math.random() - 0.5);
+
+const getAvatarNumber = () => {
+  const avatarNumber = avatarRandomNumbers.pop();
+  if (avatarNumber < 10) {
+    return `0${avatarNumber}`;
   }
-  return Math.floor(Math.random() * (maxNumber - minNumber + 1) ) + minNumber;
+  return avatarNumber;
 };
 
-const getRandomFloat = (minNumber, maxNumber, fractionDigits = 0) => {
-  if (maxNumber - minNumber < 0) {
-    return null;
-  }
-  return  +(Math.random() * (maxNumber - minNumber) + minNumber).toFixed(fractionDigits);
+const getRandomArrElement = (arr) => arr[getRandomPositiveInteger(0, arr.length - 1)];
+
+const getRandomArrElements = (arr) => {
+  const arrNumber = getRandomPositiveInteger(1, arr.length);
+  const arrRandomList = arr.sort(() => Math.random() - 0.5);
+  return arrRandomList.slice(0,arrNumber);
 };
 
-getRandomInt(2, 15);
-getRandomInt(12, 2);
-getRandomFloat(2,15, 4);
-getRandomFloat(12,2);
+const getPrice = () => {
+  return getRandomPositiveInteger(1000, 10000);
+};
+
+const getRoomsNumber = () => {
+  return getRandomPositiveInteger(1,5);
+};
+
+const getGuestsNumber = () => {
+  return getRandomPositiveInteger(1,12);
+};
+
+const getLocationLat = () => {
+  return getRandomPositiveFloat(35.65000, 35.70000, 5);
+};
+
+const getLocationLng = () => {
+  return getRandomPositiveFloat(139.70000, 139.80000, 5);
+};
+
+const createAdvert = () => {
+  const locationLat = getLocationLat();
+  const locationLng = getLocationLng();
+  return {
+    author: { avatar: `img/avatars/user${getAvatarNumber()}.png` },
+    offer: {
+      title: 'Апартаменты с видом на море',
+      address: `${locationLat}, ${locationLng}`,
+      price: getPrice(),
+      type: getRandomArrElement(APARTMENT_TYPES),
+      rooms: getRoomsNumber(),
+      guests: getGuestsNumber(),
+      checkin: getRandomArrElement(CHECKIN_OPTIONS),
+      checkout: getRandomArrElement(CHECKOUT_OPTIONS),
+      features: getRandomArrElements(FEATURES_TYPE),
+      description: 'Апартаменты имеют большие просторные окна, дизайн в минималистическом стиле, практичный и функциональный',
+      photos: getRandomArrElements(PHOTO_LIST),
+    },
+    location: {
+      lat: locationLat,
+      lng: locationLng,
+    },
+  };
+};
+
+const advertList = Array.from({length: ADVERT_COUNT}, createAdvert);

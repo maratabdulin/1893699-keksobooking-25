@@ -61,4 +61,4 @@ const createAdvert = () => {
 
 Array.from({length: ADVERT_COUNT}, createAdvert);
 
-export {createAdvert};
+export {createAdvert, ADVERT_COUNT};

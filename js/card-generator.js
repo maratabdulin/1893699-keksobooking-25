@@ -6,11 +6,11 @@ const similarAdverts = createAdverts();
 const similarAdvertsFragment = document.createDocumentFragment();
 
 similarAdverts.forEach(({offer, author}) => {
-  const advertElement = advertTemplate.cloneNode();
+  const advertElement = advertTemplate.cloneNode(true);
   advertElement.querySelector('.popup__title').textContent = offer.title;
   advertElement.querySelector('.popup__text--address').textContent = offer.address;
   advertElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  advertElement.querySelector('.popup__type').textContent = offer.type;
+  advertElement.querySelector('.popup__type').textContent = Object.values(offer.type).toString();
   advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests}`;
   advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   advertElement.querySelector('.popup__description').textContent = offer.description;

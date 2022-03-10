@@ -1,6 +1,6 @@
 import {getRandomArrElements, getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrElement} from './util.js';
 
-const ADVERT_COUNT = 4;
+const ADVERT_COUNT = 1;
 const APARTMENT_TYPES = [
   {palace: 'Дворец'},
   {flat: 'Квартира'},

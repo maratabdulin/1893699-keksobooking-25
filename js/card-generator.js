@@ -30,13 +30,8 @@ similarAdverts.forEach(({offer, author}) => {
   photosContainer.innerHTML = '';
   offer.photos.forEach(
     (photoSrc) => {
-      const photoItem = document.createElement('img');
-      photoItem.classList.add('popup__photo');
-      photoItem.src = photoSrc;
-      photoItem.alt = 'Фотография жилья';
-      photoItem.width = 45;
-      photoItem.height = 40;
-      photosContainer.append(photoItem);
+      const photoItem = `<img src="${photoSrc}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
+      photosContainer.innerHTML += photoItem;
     }
   );
 

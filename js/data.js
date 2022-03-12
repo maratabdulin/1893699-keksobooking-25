@@ -1,13 +1,14 @@
-import {getRandomArrElements, getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrElement} from './util.js';
+import {getRandomArrElements, getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrElement, getRandomObjValue} from './util.js';
 
 const ADVERT_COUNT = 1;
-const APARTMENT_TYPES = [
-  {palace: 'Дворец'},
-  {flat: 'Квартира'},
-  {house: 'Дом'},
-  {bungalow: 'Бунгало'},
-  {hotel: 'Отель'}
-];
+const APARTMENT_TYPES = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
+
 const CHECKIN_OPTIONS = ['12:00', '13:00', '14:00'];
 const CHECKOUT_OPTIONS = ['12:00', '13:00', '14:00'];
 const FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -49,7 +50,7 @@ const createAdvert = () => {
       title: 'Апартаменты с видом на море',
       address: `${locationLat}, ${locationLng}`,
       price: getPrice(),
-      type: getRandomArrElement(APARTMENT_TYPES),
+      type: getRandomObjValue(APARTMENT_TYPES),
       rooms: getRoomsNumber(),
       guests: getGuestsNumber(),
       checkin: getRandomArrElement(CHECKIN_OPTIONS),

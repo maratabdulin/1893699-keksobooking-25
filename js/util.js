@@ -20,5 +20,11 @@ const getRandomArrElements = (arr) => {
   return arrRandomList.slice(0,arrNumber);
 };
 
-export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrElements, getRandomArrElement};
+const getRandomObjValue = (obj) => {
+  const objectKeysArr = Object.keys(obj);
+  const randomArrNumber = Math.floor(Math.random() * objectKeysArr.length);
+  return obj[objectKeysArr[randomArrNumber]];
+};
+
+export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrElements, getRandomArrElement, getRandomObjValue};
 

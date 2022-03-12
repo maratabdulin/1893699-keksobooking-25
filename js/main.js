@@ -1,3 +1,4 @@
-import {createAdvert, ADVERT_COUNT} from './data';
+import './card-generator.js';
+import './data.js';
+import './page.js';
 
-Array.from({length: ADVERT_COUNT}, createAdvert);

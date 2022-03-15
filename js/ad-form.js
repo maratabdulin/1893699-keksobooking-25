@@ -68,6 +68,18 @@ const onTypeFormChange = () => {
 pristine.addValidator(priceField, validatePrice, priceErrorMessage);
 typeField.addEventListener('change', onTypeFormChange);
 
+const timeinField = form.querySelector('#timein');
+const timeoutField = form.querySelector('#timeout');
+
+timeinField.addEventListener('change', () => {
+  timeoutField.value = timeinField.value;
+});
+
+timeoutField.addEventListener('change', () => {
+  timeinField.value = timeoutField.value;
+});
+
+
 form.addEventListener('submit', (evt) => {
   //if the pristine check fails, prevent the form from being submitted
   if(!pristine.validate()){

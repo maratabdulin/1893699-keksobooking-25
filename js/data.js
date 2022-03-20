@@ -1,6 +1,6 @@
 import {getRandomArrElements, getRandomPositiveFloat, getRandomPositiveInteger, getRandomArrElement, getRandomObjValue} from './util.js';
 
-const ADVERT_COUNT = 1;
+const ADVERT_COUNT = 10;
 const APARTMENT_TYPES = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -35,7 +35,7 @@ const getPrice = () => getRandomPositiveInteger(1000, 10000);
 
 const getRoomsNumber = () => getRandomPositiveInteger(1,5);
 
-const getGuestsNumber = () => getRandomPositiveInteger(1,12);
+const getGuestsNumber = () => getRandomPositiveInteger(1,6);
 
 const getLocationLat = () => getRandomPositiveFloat(35.65000, 35.70000, 5);
 

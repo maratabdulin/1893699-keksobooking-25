@@ -79,41 +79,11 @@ timeoutField.addEventListener('change', () => {
   timeinField.value = timeoutField.value;
 });
 
-const sliderElement = document.querySelector('.ad-form__slider');
-
-noUiSlider.create(sliderElement, {
-  range: {
-    min: +priceField.min,
-    max: +priceField.max,
-  },
-  start: +priceField.placeholder,
-  step: 1,
-  connect: true,
-  format: {
-    to: function (value) {
-      return value.toFixed(0);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
-  },
-});
-
-sliderElement.noUiSlider.on('update', () => {
-  priceField.value = sliderElement.noUiSlider.get();
-});
-
-typeField.addEventListener('change', () =>  {
-  sliderElement.noUiSlider.set([priceOption[typeField.value], null]);
-});
-
-priceField.addEventListener('change', () => {
-  sliderElement.noUiSlider.set([priceField.value], null);
-});
-
 form.addEventListener('submit', (evt) => {
   //if the pristine check fails, prevent the form from being submitted
   if(!pristine.validate()){
     evt.preventDefault();
   }
 });
+
+export {priceOption};

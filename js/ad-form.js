@@ -79,7 +79,6 @@ timeoutField.addEventListener('change', () => {
   timeinField.value = timeoutField.value;
 });
 
-
 form.addEventListener('submit', (evt) => {
   //if the pristine check fails, prevent the form from being submitted
   if(!pristine.validate()){
@@ -87,4 +86,4 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
-
+export {priceOption};

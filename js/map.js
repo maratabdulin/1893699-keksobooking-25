@@ -1,10 +1,8 @@
 import {getPageActive, getPageInactive} from './page.js';
-import {createAdverts} from './data.js';
 import {createCard} from './create-card.js';
 
 getPageInactive();
 
-const advertsData = createAdverts();
 const addressForm = document.querySelector('#address');
 
 const startCoordinate = {
@@ -79,7 +77,8 @@ const createMarker = ({author, offer, location}) => {
     .bindPopup(createCard({author, offer}));
 };
 
-advertsData.forEach((advert) => {
-  createMarker(advert);
+const createMarkers = (advertsData) => advertsData.forEach(({author, offer, location}) => {
+  createMarker({author, offer, location});
 });
 
+export {createMarkers};

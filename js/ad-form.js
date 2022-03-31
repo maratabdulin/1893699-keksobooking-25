@@ -110,10 +110,9 @@ const setUserFormSubmit = (onSuccess) => {
   });
 };
 
-const resetForm = () => {
-  form.reset();
-
-};
+// const resetForm = () => {
+//   form.reset();
+// };
 
 
 export {priceOption, setUserFormSubmit};

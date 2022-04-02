@@ -60,6 +60,15 @@ mainMarker.on('moveend', (evt) => {
   addressForm.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
+const resetMap = () => {
+  mainMarker.setLatLng(startCoordinate);
+  addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
+  const openPopup = document.querySelector('.leaflet-popup');
+  if (openPopup) {
+    openPopup.remove();
+  }
+};
+
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = ({author, offer, location}) => {
@@ -81,4 +90,4 @@ const createMarkers = (advertsData) => advertsData.forEach(({author, offer, loca
   createMarker({author, offer, location});
 });
 
-export {createMarkers};
+export {createMarkers, resetMap};

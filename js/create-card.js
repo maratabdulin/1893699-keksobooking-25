@@ -1,22 +1,32 @@
 const getFeaturesList = (element, data) => {
-  element.forEach((featuresListItem) => {
-    const isNecessary = data.some(
-      (feature) => featuresListItem.classList.contains(`popup__feature--${feature}`),
-    );
-    if (!isNecessary) {
+  if (data !== undefined) {
+    element.forEach((featuresListItem) => {
+      const isNecessary = data.some(
+        (feature) => featuresListItem.classList.contains(`popup__feature--${feature}`),
+      );
+      if (!isNecessary) {
+        featuresListItem.remove();
+      }
+    });
+  }
+  else {
+    element.forEach((featuresListItem) => {
       featuresListItem.remove();
-    }
-  });
+    });
+  }
 };
 
 const getPhotosList = (element, data) => {
-  element.innerHTML = '';
-  data.forEach(
-    (photoSrc) => {
-      const photoItem = `<img src="${photoSrc}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
-      element.innerHTML += photoItem;
-    }
-  );
+  if (data !== undefined) {
+    element.innerHTML = '';
+    data.forEach(
+      (photoSrc) => {
+        const photoItem = `<img src="${photoSrc}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
+        element.innerHTML += photoItem;
+      });
+  }  else {
+    element.innerHTML = '';
+  }
 };
 
 const createCard = ({offer, author}) => {

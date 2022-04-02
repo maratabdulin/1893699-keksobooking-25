@@ -1,4 +1,10 @@
+import {provideData, POST_URL} from './api.js';
+import {showErrorWindow} from './util.js';
+import {resetMap} from './map.js';
+
 const form = document.querySelector('.ad-form');
+const submitButton = form.querySelector('.ad-form__submit');
+const resetButton = form.querySelector('.ad-form__reset');
 
 const pristine = new Pristine (form, {
   classTo: 'ad-form__element',
@@ -79,11 +85,42 @@ timeoutField.addEventListener('change', () => {
   timeinField.value = timeoutField.value;
 });
 
-form.addEventListener('submit', (evt) => {
-  //if the pristine check fails, prevent the form from being submitted
-  if(!pristine.validate()){
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      provideData(
+        POST_URL,
+        'POST',
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          form.reset();
+          resetMap();
+        },
+        showErrorWindow,
+        new FormData(evt.target)
+      );
+    }
+  });
+};
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  form.reset();
+  resetMap();
 });
 
-export {priceOption};
+export {priceOption, setUserFormSubmit};

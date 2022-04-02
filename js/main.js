@@ -1,6 +1,14 @@
-import './create-card.js';
-import './data.js';
-import './page.js';
-import './ad-form.js';
-import  './map.js';
-import './slider.js';
+import {createMarkers} from './map.js';
+import {provideData, GET_URL} from './api.js';
+import {setUserFormSubmit} from './ad-form.js';
+import {showSuccessWindow, showAlertWindow} from './util.js';
+
+provideData(
+  GET_URL,
+  'GET',
+  (adverts) => createMarkers(adverts),
+  showAlertWindow,
+);
+
+setUserFormSubmit(showSuccessWindow);
+

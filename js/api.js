@@ -1,7 +1,7 @@
 const GET_URL = 'https://25.javascript.pages.academy/keksobooking/data/';
 const POST_URL = 'https://25.javascript.pages.academy/keksobooking/404';
 
-const provideData = (url, method, onSuccess, onFail, body) => {
+const fetchData = (url, method, onSuccess, onFail, body) => {
   fetch(
     url,
     {
@@ -22,4 +22,4 @@ const provideData = (url, method, onSuccess, onFail, body) => {
     .catch(() => onFail());
 };
 
-export {provideData, GET_URL, POST_URL};
+export {fetchData, GET_URL, POST_URL};

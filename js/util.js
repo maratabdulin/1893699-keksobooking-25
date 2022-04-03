@@ -1,33 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-const getRandomPositiveInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const getRandomPositiveFloat = (a, b, digits = 1) => {
-  const lower = Math.min(Math.abs(a), Math.abs(b));
-  const upper = Math.max(Math.abs(a), Math.abs(b));
-  const result = Math.random() * (upper - lower) + lower;
-  return +result.toFixed(digits);
-};
-
-const getRandomArrElement = (arr) => arr[getRandomPositiveInteger(0, arr.length - 1)];
-
-const getRandomArrElements = (arr) => {
-  const arrNumber = getRandomPositiveInteger(1, arr.length);
-  const arrRandomList = arr.sort(() => Math.random() - 0.5);
-  return arrRandomList.slice(0,arrNumber);
-};
-
-const getRandomObjValue = (obj) => {
-  const objectKeysArr = Object.keys(obj);
-  const randomArrNumber = Math.floor(Math.random() * objectKeysArr.length);
-  return obj[objectKeysArr[randomArrNumber]];
-};
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showSuccessWindow = () => {
@@ -64,7 +36,4 @@ const showAlertWindow = () => {
 };
 
 
-export {getRandomPositiveInteger, getRandomPositiveFloat,
-  getRandomArrElements, getRandomArrElement, getRandomObjValue,
-  showSuccessWindow, showErrorWindow, showAlertWindow
-};
+export { showSuccessWindow, showErrorWindow, showAlertWindow };

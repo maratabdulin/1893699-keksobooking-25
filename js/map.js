@@ -106,7 +106,6 @@ const createMarkers = (advertsData) => {
     .forEach(({author, offer, location}) => {
       createMarker({author, offer, location});
     });
-  console.log(advertsData.slice().sort(compareAdverts).filter(filterHousingType).filter(filterHousingPrice).filter(filterHousingRooms).filter(filterHousingGuests));
 };
 
 export {createMarkers, resetMap};

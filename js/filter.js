@@ -34,38 +34,6 @@ const pricingTypes = {
 
 const inRange = (x, min, max) => x >= min && x <= max;
 
-const getAdvertRank = (advert) => {
-  const rangePrices = pricingTypes[housingPrice.value];
-  let rank = 0;
-  if (advert.offer.type === housingType.value ) {
-    rank += 2;
-  }
-  if (inRange( advert.offer.price, rangePrices.start, rangePrices.end )) {
-    rank += 2;
-  }
-  if (advert.offer.rooms === +housingRooms.value ) {
-    rank += 2;
-  }
-  if (advert.offer.guests === +housingGuests.value ) {
-    rank += 2;
-  }
-  if (advert.offer.features) {
-    const housingFeatureChecked = document.querySelectorAll('.map__checkbox[type=checkbox]:checked');
-    for (const feature of housingFeatureChecked || '') {
-      if (advert.offer.features.includes(feature.value)) {
-        rank += 1;
-      }
-    }
-  }
-  return rank;
-};
-
-const compareAdverts = (advertA, advertB) => {
-  const rankA = getAdvertRank(advertA);
-  const rankB = getAdvertRank(advertB);
-  return rankB - rankA;
-};
-
 const filterHousingType = (advert) => {
   if (housingType.value !== 'any') {
     return advert.offer.type === housingType.value;
@@ -95,6 +63,23 @@ const filterHousingGuests = (advert) => {
   return true;
 };
 
+const filterHousingFeatures = (advert) => {
+  const housingFeatureClone = [...housingFeatures];
+  if (housingFeatureClone.every((elem) => elem.checked === false)) {
+    return true;
+  }
+  if (advert.offer.features) {
+    const housingFeatureArr = housingFeatureClone.map((elem) => {
+      if (elem.checked === true) {
+        return elem.value;
+      }
+    }).filter((el) => el !== undefined);
+    return housingFeatureArr.every((elem) => advert.offer.features.includes(elem));
+  } else {
+    return false;
+  }
+};
+
 export {setHousingType, setHousingPrice, setHousingRooms, setHousingGuests, setHousingFeatures,
-  filterHousingType, filterHousingPrice, filterHousingRooms, filterHousingGuests, compareAdverts};
+  filterHousingType, filterHousingPrice, filterHousingRooms, filterHousingGuests, filterHousingFeatures};
 

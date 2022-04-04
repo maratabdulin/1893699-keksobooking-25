@@ -1,10 +1,11 @@
-import {provideData, POST_URL} from './api.js';
+import {fetchData, POST_URL} from './api.js';
 import {showErrorWindow} from './util.js';
 import {resetMap} from './map.js';
 
 const form = document.querySelector('.ad-form');
 const submitButton = form.querySelector('.ad-form__submit');
 const resetButton = form.querySelector('.ad-form__reset');
+const mapForm = document.querySelector('.map__filters');
 
 const pristine = new Pristine (form, {
   classTo: 'ad-form__element',
@@ -101,13 +102,14 @@ const setUserFormSubmit = (onSuccess) => {
     const isValid = pristine.validate();
     if (isValid) {
       blockSubmitButton();
-      provideData(
+      fetchData(
         POST_URL,
         'POST',
         () => {
           onSuccess();
           unblockSubmitButton();
           form.reset();
+          mapForm.reset();
           resetMap();
         },
         showErrorWindow,
@@ -120,6 +122,7 @@ const setUserFormSubmit = (onSuccess) => {
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   form.reset();
+  mapForm.reset();
   resetMap();
 });
 

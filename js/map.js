@@ -1,10 +1,17 @@
 import {getPageActive, getPageInactive} from './page.js';
 import {createCard} from './create-card.js';
+import {
+  compareAdverts,
+  filterHousingGuests,
+  filterHousingPrice,
+  filterHousingRooms,
+  filterHousingType
+} from './filter.js';
 
 getPageInactive();
 
 const addressForm = document.querySelector('#address');
-
+const ADVERTS_COUNT = 10;
 const startCoordinate = {
   lat: 35.68084,
   lng: 139.76748,
@@ -86,8 +93,19 @@ const createMarker = ({author, offer, location}) => {
     .bindPopup(createCard({author, offer}));
 };
 
-const createMarkers = (advertsData) => advertsData.forEach(({author, offer, location}) => {
-  createMarker({author, offer, location});
-});
+const createMarkers = (advertsData) => {
+  markerGroup.clearLayers();
+  advertsData
+    .slice()
+    .sort(compareAdverts)
+    .filter(filterHousingType)
+    .filter(filterHousingPrice)
+    .filter(filterHousingRooms)
+    .filter(filterHousingGuests)
+    .slice(0, ADVERTS_COUNT)
+    .forEach(({author, offer, location}) => {
+      createMarker({author, offer, location});
+    });
+};
 
 export {createMarkers, resetMap};

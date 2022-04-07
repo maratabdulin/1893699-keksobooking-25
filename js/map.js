@@ -1,11 +1,11 @@
 import {getPageActive, getPageInactive} from './page.js';
 import {createCard} from './create-card.js';
 import {
-  compareAdverts,
   filterHousingGuests,
   filterHousingPrice,
   filterHousingRooms,
-  filterHousingType
+  filterHousingType,
+  filterHousingFeatures
 } from './filter.js';
 
 getPageInactive();
@@ -93,15 +93,16 @@ const createMarker = ({author, offer, location}) => {
     .bindPopup(createCard({author, offer}));
 };
 
+
 const createMarkers = (advertsData) => {
   markerGroup.clearLayers();
   advertsData
     .slice()
-    .sort(compareAdverts)
     .filter(filterHousingType)
     .filter(filterHousingPrice)
     .filter(filterHousingRooms)
     .filter(filterHousingGuests)
+    .filter(filterHousingFeatures)
     .slice(0, ADVERTS_COUNT)
     .forEach(({author, offer, location}) => {
       createMarker({author, offer, location});

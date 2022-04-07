@@ -1,5 +1,5 @@
 const GET_URL = 'https://25.javascript.pages.academy/keksobooking/data/';
-const POST_URL = 'https://25.javascript.pages.academy/keksobooking/404';
+const POST_URL = 'https://25.javascript.pages.academy/keksobooking/';
 
 const fetchData = (url, method, onSuccess, onFail, body) => {
   fetch(

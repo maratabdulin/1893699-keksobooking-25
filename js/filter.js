@@ -1,29 +1,8 @@
-
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
 const housingFeatures = document.querySelectorAll('.map__checkbox');
-
-const setHousingType = (cb) => {
-  housingType.addEventListener('change', () => cb());
-};
-
-const setHousingPrice = (cb) => {
-  housingPrice.addEventListener('change', () => cb());
-};
-
-const setHousingRooms = (cb) => {
-  housingRooms.addEventListener('change', () => cb());
-};
-
-const setHousingGuests = (cb) => {
-  housingGuests.addEventListener('change', () => cb());
-};
-
-const setHousingFeatures = (cb) => {
-  for (const feature of housingFeatures) { feature.addEventListener('change', () => cb());}
-};
 
 const pricingTypes = {
   'any': {start: 0, end: 200000},
@@ -32,36 +11,42 @@ const pricingTypes = {
   'high': {start: 50001, end: 200000},
 };
 
-const inRange = (x, min, max) => x >= min && x <= max;
+const setHousingType = (cb) => {
+  housingType.addEventListener('change', () => cb());
 
-const filterHousingType = (advert) => {
-  if (housingType.value !== 'any') {
-    return advert.offer.type === housingType.value;
-  }
-  return true;
+};
+const setHousingPrice = (cb) => {
+  housingPrice.addEventListener('change', () => cb());
+
+};
+const setHousingRooms = (cb) => {
+  housingRooms.addEventListener('change', () => cb());
+
+};
+const setHousingGuests = (cb) => {
+  housingGuests.addEventListener('change', () => cb());
+
+};
+const setHousingFeatures = (cb) => {
+  housingFeatures.forEach((feature) => feature.addEventListener('change', () => cb()) );
+
 };
 
+const inRange = (x, min, max) => x >= min && x <= max;
+
+const filterHousingType = (advert) => housingType.value !== 'any' ? advert.offer.type === housingType.value : true;
+
 const filterHousingPrice = (advert) => {
+  const rangePrices = pricingTypes[housingPrice.value];
   if (housingPrice.value !== 'any') {
-    const rangePrices = pricingTypes[housingPrice.value];
     return inRange( advert.offer.price, rangePrices.start, rangePrices.end );
   }
   return true;
 };
 
-const filterHousingRooms = (advert) => {
-  if (housingRooms.value !== 'any') {
-    return advert.offer.rooms === +housingRooms.value;
-  }
-  return true;
-};
+const filterHousingRooms = (advert) => housingRooms.value !== 'any' ? advert.offer.rooms === +housingRooms.value : true;
 
-const filterHousingGuests = (advert) => {
-  if (housingGuests.value !== 'any') {
-    return advert.offer.guests === +housingGuests.value;
-  }
-  return true;
-};
+const filterHousingGuests = (advert) => housingGuests.value !== 'any' ? advert.offer.guests === +housingGuests.value : true;
 
 const filterHousingFeatures = (advert) => {
   const housingFeatureClone = [...housingFeatures];

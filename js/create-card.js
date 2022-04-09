@@ -1,3 +1,11 @@
+const offerTypeData = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house:'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
+
 const getFeaturesList = (element, data) => {
   if (data !== undefined) {
     element.forEach((featuresListItem) => {
@@ -10,9 +18,7 @@ const getFeaturesList = (element, data) => {
     });
   }
   else {
-    element.forEach((featuresListItem) => {
-      featuresListItem.remove();
-    });
+    element.forEach((featuresListItem) => featuresListItem.remove());
   }
 };
 
@@ -29,14 +35,6 @@ const getPhotosList = (element, data) => {
   }
 };
 
-const offerTypeData = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house:'Дом',
-  bungalow: 'Бунгало',
-  hotel: 'Отель',
-};
-
 const createCard = ({offer, author}) => {
   const advertTemplate = document.querySelector('#card').content.querySelector('.popup');
   const advertElement = advertTemplate.cloneNode(true);
@@ -47,8 +45,12 @@ const createCard = ({offer, author}) => {
   advertElement.querySelector('.popup__text--address').textContent = offer.address;
   advertElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
   advertElement.querySelector('.popup__type').textContent = offerTypeData[offer.type];
-  if (offer.rooms > 1) {advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} человек`;}
-  if (offer.rooms <= 1) {advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комната для ${offer.guests} человек`;}
+  if (offer.rooms > 1) {
+    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} человек`;
+  }
+  if (offer.rooms <= 1) {
+    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комната для ${offer.guests} человекa`;
+  }
   advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   advertElement.querySelector('.popup__description').textContent = offer.description;
 

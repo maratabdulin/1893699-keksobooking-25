@@ -96,6 +96,13 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
+const resetPicturePreview = () => {
+  const avatarPreview = document.querySelector('.avatar__preview');
+  const offerPhotoContainer = document.querySelector('.ad-form__photo');
+  avatarPreview.src = 'img/muffin-grey.svg';
+  offerPhotoContainer.innerHTML = '';
+};
+
 const setUserFormSubmit = (onSuccess) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -108,6 +115,7 @@ const setUserFormSubmit = (onSuccess) => {
         () => {
           onSuccess();
           unblockSubmitButton();
+          resetPicturePreview();
           form.reset();
           mapForm.reset();
           resetMap();

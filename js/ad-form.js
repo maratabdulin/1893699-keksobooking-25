@@ -2,6 +2,21 @@ import {fetchData, POST_URL} from './api.js';
 import {showErrorWindow} from './util.js';
 import {resetMap} from './map.js';
 
+const priceOption = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000,
+};
+
+const roomsNumberOption = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0'],
+};
+
 const form = document.querySelector('.ad-form');
 const submitButton = form.querySelector('.ad-form__submit');
 const resetButton = form.querySelector('.ad-form__reset');
@@ -18,19 +33,10 @@ const pristine = new Pristine (form, {
 
 const roomNumberField = document.querySelector('#room_number');
 const capacityField = document.querySelector('#capacity');
-const roomsNumberOption = {
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
-  '100': ['0'],
-};
 
 const validateRooms = () => roomsNumberOption[roomNumberField.value].includes(capacityField.value);
 
-const onCapacityFormChange = () => {
-  pristine.validate(capacityField);
-};
-
+const onCapacityFormChange = () => pristine.validate(capacityField);
 const getRoomsErrorMessage = () => {
   if (roomNumberField.value === '1') {
     return 'только для одного гостя';
@@ -42,20 +48,13 @@ const getRoomsErrorMessage = () => {
     return 'не более трех гостей';
   }
   return 'не для гостей';
+
 };
-
 pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
-roomNumberField.addEventListener('change', onCapacityFormChange);
 
+roomNumberField.addEventListener('change', onCapacityFormChange);
 const priceField = form.querySelector('#price');
 const typeField = form.querySelector('#type');
-const priceOption = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000,
-};
 
 typeField.addEventListener('change', () => {
   priceField.placeholder = priceOption[typeField.value];
@@ -68,9 +67,7 @@ const priceErrorMessage = () => {
   return `минимальная цена ${minPrice} руб.`;
 };
 
-const onTypeFormChange = () => {
-  pristine.validate(priceField);
-};
+const onTypeFormChange = () => pristine.validate(priceField);
 
 pristine.addValidator(priceField, validatePrice, priceErrorMessage);
 typeField.addEventListener('change', onTypeFormChange);
@@ -96,6 +93,13 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
+const resetPicturePreview = () => {
+  const avatarPreview = document.querySelector('.avatar__preview');
+  const offerPhotoContainer = document.querySelector('.ad-form__photo');
+  avatarPreview.src = 'img/muffin-grey.svg';
+  offerPhotoContainer.innerHTML = '';
+};
+
 const setUserFormSubmit = (onSuccess) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -108,11 +112,15 @@ const setUserFormSubmit = (onSuccess) => {
         () => {
           onSuccess();
           unblockSubmitButton();
+          resetPicturePreview();
           form.reset();
           mapForm.reset();
           resetMap();
         },
-        showErrorWindow,
+        () => {
+          showErrorWindow();
+          unblockSubmitButton();
+        },
         new FormData(evt.target)
       );
     }
@@ -124,6 +132,7 @@ resetButton.addEventListener('click', (evt) => {
   form.reset();
   mapForm.reset();
   resetMap();
+  resetPicturePreview();
 });
 
 export {priceOption, setUserFormSubmit};

@@ -1,4 +1,4 @@
-import {getPageActive, getPageInactive} from './page.js';
+import {enablePage} from './page.js';
 import {createCard} from './create-card.js';
 import {
   filterHousingGuests,
@@ -8,10 +8,8 @@ import {
   filterHousingFeatures
 } from './filter.js';
 
-getPageInactive();
-
-const addressForm = document.querySelector('#address');
 const ADVERTS_COUNT = 10;
+const addressForm = document.querySelector('#address');
 const startCoordinate = {
   lat: 35.68084,
   lng: 139.76748,
@@ -19,20 +17,13 @@ const startCoordinate = {
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    getPageActive();
+    enablePage();
     addressForm.value = `${startCoordinate.lat.toFixed(5)}, ${startCoordinate.lng.toFixed(5)}`;
   })
   .setView({
     lat: startCoordinate.lat,
     lng: startCoordinate.lng,
   }, 13);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
 
 const mapMainPin = L.icon(
   {
@@ -61,21 +52,6 @@ const mainMarker = L.marker(
   },
 );
 
-mainMarker.addTo(map);
-
-mainMarker.on('moveend', (evt) => {
-  addressForm.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
-});
-
-const resetMap = () => {
-  mainMarker.setLatLng(startCoordinate);
-  addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
-  const openPopup = document.querySelector('.leaflet-popup');
-  if (openPopup) {
-    openPopup.remove();
-  }
-};
-
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = ({author, offer, location}) => {
@@ -93,7 +69,6 @@ const createMarker = ({author, offer, location}) => {
     .bindPopup(createCard({author, offer}));
 };
 
-
 const createMarkers = (advertsData) => {
   markerGroup.clearLayers();
   advertsData
@@ -108,5 +83,27 @@ const createMarkers = (advertsData) => {
       createMarker({author, offer, location});
     });
 };
+
+const resetMap = () => {
+  mainMarker.setLatLng(startCoordinate);
+  addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
+  const openPopup = document.querySelector('.leaflet-popup');
+  if (openPopup) {
+    openPopup.remove();
+  }
+};
+
+L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+).addTo(map);
+
+mainMarker.addTo(map);
+
+mainMarker.on('move', (evt) => {
+  addressForm.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+});
 
 export {createMarkers, resetMap};

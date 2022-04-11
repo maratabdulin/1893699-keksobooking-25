@@ -3,34 +3,36 @@ const adFormElements = adForm.querySelectorAll('input, select, textarea, button'
 const mapFilter = document.querySelector('.map__filters');
 const mapFiltersElements = mapFilter.querySelectorAll('input, select');
 
-const getEnabled = (nodeList) =>
+const getEnable = (nodeList) =>
   nodeList.forEach((nodeElement) => {
     nodeElement.disabled = false;
   });
 
-const getDisabled = (nodeList) => {
+const getDisable = (nodeList) => {
   nodeList.forEach((nodeElement) => {
     nodeElement.disabled = true;
   });
 };
 
-const getPageActive = () => {
+const enablePage = () => {
   adForm.classList.remove('ad-form--disabled');
   mapFilter.classList.remove('map__filters--disabled');
-  getEnabled(adFormElements);
-  getEnabled(mapFiltersElements);
+  getEnable(adFormElements);
+  getEnable(mapFiltersElements);
 };
 
-const getPageInactive = () => {
+const disablePage = () => {
   adForm.classList.add('ad-form--disabled');
   mapFilter.classList.add('map__filters--disabled');
-  getDisabled(adFormElements);
-  getDisabled(mapFiltersElements);
+  getDisable(adFormElements);
+  getDisable(mapFiltersElements);
 };
 
-const getMapFormInactive = () => {
+const disableMapForm = () => {
   mapFilter.classList.add('map__filters--disabled');
-  getDisabled(mapFiltersElements);
+  getDisable(mapFiltersElements);
 };
 
-export {getPageActive, getPageInactive, getMapFormInactive};
+disablePage();
+
+export {enablePage, disablePage, disableMapForm};

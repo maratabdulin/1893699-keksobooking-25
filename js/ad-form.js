@@ -48,20 +48,18 @@ const getRoomsErrorMessage = () => {
     return 'не более трех гостей';
   }
   return 'не для гостей';
-
 };
-pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
 
-roomNumberField.addEventListener('change', onCapacityFormChange);
 const priceField = form.querySelector('#price');
 const typeField = form.querySelector('#type');
+const validatePrice = () => +priceField.value >= priceOption[typeField.value];
 
+pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
+roomNumberField.addEventListener('change', onCapacityFormChange);
 typeField.addEventListener('change', () => {
-  priceField.placeholder = priceOption[typeField.value];
   priceField.min = priceOption[typeField.value];
 });
 
-const validatePrice = () => +priceField.value >= priceOption[typeField.value];
 const priceErrorMessage = () => {
   const minPrice = +priceField.min;
   return `минимальная цена ${minPrice} руб.`;

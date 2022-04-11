@@ -2,6 +2,7 @@ import './filter.js';
 import './avatar.js';
 import './offer-photo.js';
 import './slider.js';
+import './map.js';
 import {createMarkers} from './map.js';
 import {fetchData, GET_URL} from './api.js';
 import {setUserFormSubmit} from './ad-form.js';

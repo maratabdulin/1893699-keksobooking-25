@@ -8,14 +8,14 @@ import {
   filterHousingFeatures
 } from './filter.js';
 
-getPageInactive();
-
-const addressForm = document.querySelector('#address');
 const ADVERTS_COUNT = 10;
+const addressForm = document.querySelector('#address');
 const startCoordinate = {
   lat: 35.68084,
   lng: 139.76748,
 };
+
+getPageInactive();
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -26,13 +26,6 @@ const map = L.map('map-canvas')
     lat: startCoordinate.lat,
     lng: startCoordinate.lng,
   }, 13);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(map);
 
 const mapMainPin = L.icon(
   {
@@ -61,12 +54,6 @@ const mainMarker = L.marker(
   },
 );
 
-mainMarker.addTo(map);
-
-mainMarker.on('moveend', (evt) => {
-  addressForm.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
-});
-
 const resetMap = () => {
   mainMarker.setLatLng(startCoordinate);
   addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
@@ -93,7 +80,6 @@ const createMarker = ({author, offer, location}) => {
     .bindPopup(createCard({author, offer}));
 };
 
-
 const createMarkers = (advertsData) => {
   markerGroup.clearLayers();
   advertsData
@@ -108,5 +94,18 @@ const createMarkers = (advertsData) => {
       createMarker({author, offer, location});
     });
 };
+
+L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+).addTo(map);
+
+mainMarker.addTo(map);
+
+mainMarker.on('move', (evt) => {
+  addressForm.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
+});
 
 export {createMarkers, resetMap};

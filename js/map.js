@@ -1,4 +1,4 @@
-import {getPageActive, getPageInactive} from './page.js';
+import {enablePage} from './page.js';
 import {createCard} from './create-card.js';
 import {
   filterHousingGuests,
@@ -15,11 +15,9 @@ const startCoordinate = {
   lng: 139.76748,
 };
 
-getPageInactive();
-
 const map = L.map('map-canvas')
   .on('load', () => {
-    getPageActive();
+    enablePage();
     addressForm.value = `${startCoordinate.lat.toFixed(5)}, ${startCoordinate.lng.toFixed(5)}`;
   })
   .setView({
@@ -54,15 +52,6 @@ const mainMarker = L.marker(
   },
 );
 
-const resetMap = () => {
-  mainMarker.setLatLng(startCoordinate);
-  addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
-  const openPopup = document.querySelector('.leaflet-popup');
-  if (openPopup) {
-    openPopup.remove();
-  }
-};
-
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = ({author, offer, location}) => {
@@ -93,6 +82,15 @@ const createMarkers = (advertsData) => {
     .forEach(({author, offer, location}) => {
       createMarker({author, offer, location});
     });
+};
+
+const resetMap = () => {
+  mainMarker.setLatLng(startCoordinate);
+  addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
+  const openPopup = document.querySelector('.leaflet-popup');
+  if (openPopup) {
+    openPopup.remove();
+  }
 };
 
 L.tileLayer(

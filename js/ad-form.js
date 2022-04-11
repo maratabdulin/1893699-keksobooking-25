@@ -1,5 +1,5 @@
 import {fetchData, POST_URL} from './api.js';
-import {showErrorWindow} from './util.js';
+import {showErrorWindow, showSuccessWindow} from './util.js';
 import {resetMap} from './map.js';
 
 const priceOption = {
@@ -22,6 +22,13 @@ const submitButton = form.querySelector('.ad-form__submit');
 const resetButton = form.querySelector('.ad-form__reset');
 const mapForm = document.querySelector('.map__filters');
 
+const roomNumberField = document.querySelector('#room_number');
+const capacityField = document.querySelector('#capacity');
+const priceField = form.querySelector('#price');
+const typeField = form.querySelector('#type');
+const timeinField = form.querySelector('#timein');
+const timeoutField = form.querySelector('#timeout');
+
 const pristine = new Pristine (form, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form--invalid',
@@ -31,66 +38,32 @@ const pristine = new Pristine (form, {
   errorTextTag: 'div',
 }, true);
 
-const roomNumberField = document.querySelector('#room_number');
-const capacityField = document.querySelector('#capacity');
-
-const validateRooms = () => roomsNumberOption[roomNumberField.value].includes(capacityField.value);
-
-const onCapacityFormChange = () => pristine.validate(capacityField);
-const getRoomsErrorMessage = () => {
-  if (roomNumberField.value === '1') {
-    return 'только для одного гостя';
+const showPriceError = () => `минимальная цена ${+priceField.min} руб.`;
+const showRoomsError = () => {
+  switch (roomNumberField.value) {
+    case '1':
+      return 'только для одного гостя';
+    case '2':
+      return 'не более двух гостей';
+    case '3':
+      return 'не более трех гостей';
+    default:
+      return 'не для гостей';
   }
-  if (roomNumberField.value === '2') {
-    return 'не более двух гостей';
-  }
-  if (roomNumberField.value === '3') {
-    return 'не более трех гостей';
-  }
-  return 'не для гостей';
 };
-
-const priceField = form.querySelector('#price');
-const typeField = form.querySelector('#type');
 const validatePrice = () => +priceField.value >= priceOption[typeField.value];
-
-pristine.addValidator(capacityField, validateRooms, getRoomsErrorMessage);
-roomNumberField.addEventListener('change', onCapacityFormChange);
-typeField.addEventListener('change', () => {
-  priceField.min = priceOption[typeField.value];
-});
-
-const priceErrorMessage = () => {
-  const minPrice = +priceField.min;
-  return `минимальная цена ${minPrice} руб.`;
-};
-
+const validateRooms = () => roomsNumberOption[roomNumberField.value].includes(capacityField.value);
+const onCapacityFormChange = () => pristine.validate(capacityField);
 const onTypeFormChange = () => pristine.validate(priceField);
-
-pristine.addValidator(priceField, validatePrice, priceErrorMessage);
-typeField.addEventListener('change', onTypeFormChange);
-
-const timeinField = form.querySelector('#timein');
-const timeoutField = form.querySelector('#timeout');
-
-timeinField.addEventListener('change', () => {
-  timeoutField.value = timeinField.value;
-});
-
-timeoutField.addEventListener('change', () => {
-  timeinField.value = timeoutField.value;
-});
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'Сохраняю...';
 };
-
 const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
 };
-
 const resetPicturePreview = () => {
   const avatarPreview = document.querySelector('.avatar__preview');
   const offerPhotoContainer = document.querySelector('.ad-form__photo');
@@ -98,7 +71,21 @@ const resetPicturePreview = () => {
   offerPhotoContainer.innerHTML = '';
 };
 
-const setUserFormSubmit = (onSuccess) => {
+const onSuccessSubmitForm = () => {
+  unblockSubmitButton();
+  resetPicturePreview();
+  form.reset();
+  mapForm.reset();
+  resetMap();
+  showSuccessWindow();
+};
+
+const onFailSubmitForm = () => {
+  showErrorWindow();
+  unblockSubmitButton();
+};
+
+const setUserFormSubmit = (onSuccess, onFail) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -107,24 +94,28 @@ const setUserFormSubmit = (onSuccess) => {
       fetchData(
         POST_URL,
         'POST',
-        () => {
-          onSuccess();
-          unblockSubmitButton();
-          resetPicturePreview();
-          form.reset();
-          mapForm.reset();
-          resetMap();
-        },
-        () => {
-          showErrorWindow();
-          unblockSubmitButton();
-        },
+        () => onSuccess(),
+        () => onFail(),
         new FormData(evt.target)
       );
     }
   });
 };
 
+pristine.addValidator(capacityField, validateRooms, showRoomsError);
+pristine.addValidator(priceField, validatePrice, showPriceError);
+
+roomNumberField.addEventListener('change', onCapacityFormChange);
+typeField.addEventListener('change', () => {
+  priceField.min = priceOption[typeField.value];
+});
+typeField.addEventListener('change', onTypeFormChange);
+timeinField.addEventListener('change', () => {
+  timeoutField.value = timeinField.value;
+});
+timeoutField.addEventListener('change', () => {
+  timeinField.value = timeoutField.value;
+});
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   form.reset();
@@ -133,4 +124,4 @@ resetButton.addEventListener('click', (evt) => {
   resetPicturePreview();
 });
 
-export {priceOption, setUserFormSubmit};
+export {priceOption, setUserFormSubmit, onSuccessSubmitForm, onFailSubmitForm};

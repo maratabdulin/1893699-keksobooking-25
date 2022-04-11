@@ -2,13 +2,12 @@ import './filter.js';
 import './avatar.js';
 import './offer-photo.js';
 import './slider.js';
-import './map.js';
 import {createMarkers} from './map.js';
 import {fetchData, GET_URL} from './api.js';
-import {setUserFormSubmit} from './ad-form.js';
-import {showSuccessWindow, showAlertWindow, debounce} from './util.js';
+import {onFailSubmitForm, onSuccessSubmitForm, setUserFormSubmit} from './ad-form.js';
+import {showAlertWindow, debounce} from './util.js';
 import {setHousingType, setHousingPrice, setHousingRooms, setHousingGuests, setHousingFeatures} from './filter.js';
-import {getMapFormInactive} from './page.js';
+import {disableMapForm} from './page.js';
 
 fetchData(
   GET_URL,
@@ -23,9 +22,9 @@ fetchData(
   },
   () => {
     showAlertWindow();
-    getMapFormInactive();
+    disableMapForm();
   },
 );
 
-setUserFormSubmit(showSuccessWindow);
+setUserFormSubmit(onSuccessSubmitForm, onFailSubmitForm);
 

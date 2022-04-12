@@ -1,12 +1,14 @@
-import {enablePage} from './page.js';
+import {disableMapForm, enablePage} from './page.js';
 import {createCard} from './create-card.js';
 import {
   filterHousingGuests,
   filterHousingPrice,
   filterHousingRooms,
   filterHousingType,
-  filterHousingFeatures
+  filterHousingFeatures,
 } from './filter.js';
+import {fetchData, GET_URL} from './api.js';
+import {debounce, showAlertWindow} from './util.js';
 
 const ADVERTS_COUNT = 10;
 const addressForm = document.querySelector('#address');
@@ -84,8 +86,21 @@ const createMarkers = (advertsData) => {
     });
 };
 
+const createMarkerDebounced = (advertsData) => (debounce(() => createMarkers(advertsData)));
+
 const resetMap = () => {
   mainMarker.setLatLng(startCoordinate);
+  fetchData(
+    GET_URL,
+    'GET',
+    (adverts) => {
+      createMarkers(adverts);
+    },
+    () => {
+      showAlertWindow();
+      disableMapForm();
+    },
+  );
   addressForm.value = `${startCoordinate.lat}, ${startCoordinate.lng}`;
   const openPopup = document.querySelector('.leaflet-popup');
   if (openPopup) {
@@ -106,4 +121,4 @@ mainMarker.on('move', (evt) => {
   addressForm.value = `${evt.target.getLatLng().lat.toFixed(5)}, ${evt.target.getLatLng().lng.toFixed(5)}`;
 });
 
-export {createMarkers, resetMap};
+export {createMarkers, resetMap, createMarkerDebounced};

@@ -102,6 +102,9 @@ const setUserFormSubmit = (onSuccess, onFail) => {
   });
 };
 
+priceField.value = '';
+priceField.min = priceOption[typeField.value];
+
 pristine.addValidator(capacityField, validateRooms, showRoomsError);
 pristine.addValidator(priceField, validatePrice, showPriceError);
 

@@ -3,7 +3,7 @@
 * Студент: [Марат Абдулин](https://up.htmlacademy.ru/javascript/25/user/1893699).
 * Наставник: [Елена Грицук](https://htmlacademy.ru/profile/id199079).
 
-[Просмотр сайта](https://maratabdulin.github.io/1893699-keksobooking-25/)
+[Просмотр сайта](https://maratabdulin.github.io/Keksobooking/)
 
 <a href="https://htmlacademy.ru/intensive/javascript"><img align="left" width="50" height="50" alt="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/javascript/logo-for-github-2.png"></a>
 

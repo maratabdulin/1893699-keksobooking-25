@@ -38,17 +38,17 @@ const pristine = new Pristine (form, {
   errorTextTag: 'div',
 }, true);
 
-const showPriceError = () => `минимальная цена ${+priceField.min} руб.`;
+const showPriceError = () => `minimal price ${+priceField.min} rub.`;
 const showRoomsError = () => {
   switch (roomNumberField.value) {
     case '1':
-      return 'только для одного гостя';
+      return 'for one guest only';
     case '2':
-      return 'не более двух гостей';
+      return 'no more than two guest';
     case '3':
-      return 'не более трех гостей';
+      return 'no more than three guest';
     default:
-      return 'не для гостей';
+      return 'not for a guest';
   }
 };
 const validatePrice = () => +priceField.value >= priceOption[typeField.value];
@@ -58,11 +58,11 @@ const onTypeFormChange = () => pristine.validate(priceField);
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
-  submitButton.textContent = 'Сохраняю...';
+  submitButton.textContent = 'Save data...';
 };
 const unblockSubmitButton = () => {
   submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButton.textContent = 'Published';
 };
 const resetPicturePreview = () => {
   const avatarPreview = document.querySelector('.avatar__preview');

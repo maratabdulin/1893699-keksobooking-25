@@ -1,9 +1,9 @@
 const offerTypeData = {
-  palace: 'Дворец',
-  flat: 'Квартира',
-  house:'Дом',
-  bungalow: 'Бунгало',
-  hotel: 'Отель',
+  palace: 'Palace',
+  flat: 'Flat',
+  house:'House',
+  bungalow: 'Bungalow',
+  hotel: 'Hotel',
 };
 
 const getFeaturesList = (element, data) => {
@@ -27,7 +27,7 @@ const getPhotosList = (element, data) => {
     element.innerHTML = '';
     data.forEach(
       (photoSrc) => {
-        const photoItem = `<img src="${photoSrc}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
+        const photoItem = `<img src="${photoSrc}" class="popup__photo" width="45" height="40" alt="photo of place">`;
         element.innerHTML += photoItem;
       });
   }  else {
@@ -43,15 +43,15 @@ const createCard = ({offer, author}) => {
 
   advertElement.querySelector('.popup__title').textContent = offer.title;
   advertElement.querySelector('.popup__text--address').textContent = offer.address;
-  advertElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
+  advertElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/night`;
   advertElement.querySelector('.popup__type').textContent = offerTypeData[offer.type];
   if (offer.rooms > 1) {
-    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} человек`;
+    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} rooms for ${offer.guests} person`;
   }
   if (offer.rooms <= 1) {
-    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комната для ${offer.guests} человекa`;
+    advertElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} room for ${offer.guests} person`;
   }
-  advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
+  advertElement.querySelector('.popup__text--time').textContent = `Checkin after ${offer.checkin}, checkout before ${offer.checkout}`;
   advertElement.querySelector('.popup__description').textContent = offer.description;
 
   getFeaturesList(featuresList, offer.features);
